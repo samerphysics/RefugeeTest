@@ -34,6 +34,8 @@ import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.util.Objects;
+
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     ImageView iv_R_ProfileImage;
@@ -69,7 +71,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         Toolbar toolbar = findViewById(R.id.my_action_bar);
         setSupportActionBar(toolbar);
 
-        iv_R_ProfileImage = findViewById(R.id.iv_sell_image);
+        iv_R_ProfileImage = findViewById(R.id.iv_R_ProfileImage);
         et_R_FirstName = findViewById(R.id.et_R_FirstName);
         et_R_LastName = findViewById(R.id.et_R_LastName);
         et_R_Age = findViewById(R.id.et_R_Age);
@@ -184,7 +186,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         if (task.isSuccessful()) {
 
                             //FIRE BASE DATABASE INSTANCE
-                            mUserDatabse = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
+                            mUserDatabse = FirebaseDatabase.getInstance().getReference().child("Users").child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
                             mStorageRef = FirebaseStorage.getInstance().getReference();
 
                             ///////////////////////////////////////// Save user info to fire base db
@@ -194,7 +196,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                 final String lastName = et_R_LastName.getText().toString().trim();
                                 final String age = et_R_Age.getText().toString().trim();
 
-                                StorageReference mChildStorage = mStorageRef.child("profile_picture").child(imageHoldUri.getLastPathSegment());
+                                StorageReference mChildStorage = mStorageRef.child("profile_picture").child(Objects.requireNonNull(imageHoldUri.getLastPathSegment()));
 //                                String profilePicUrl = imageHoldUri.getLastPathSegment();
 
                                 mChildStorage.putFile(imageHoldUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -208,6 +210,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                         mUserDatabse.child("age").setValue(age);
                                         mUserDatabse.child("gender").setValue(gender);
                                         mUserDatabse.child("user_id").setValue(mAuth.getCurrentUser().getUid());
+                                        assert imageUrl != null;
                                         mUserDatabse.child("image_url").setValue(imageUrl.toString());
 
                                     }
@@ -225,7 +228,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                 Toast.makeText(getApplicationContext(), "You are already registered", Toast.LENGTH_SHORT).show();
 
                             } else {
-                                Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Something went wrong, try again please!", Toast.LENGTH_SHORT).show();
                             }
 
                         }
@@ -236,9 +239,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private void profilePicSelection() {
 
-
         //DISPLAY DIALOG TO CHOOSE CAMERA OR GALLERY
-
         final CharSequence[] items = {"Take Photo", "Choose from Library",
                 "Cancel"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -259,7 +260,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }
         });
         builder.show();
-
     }
 
     private void cameraIntent() {
@@ -283,7 +283,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
         //SAVE URI FROM GALLERY
         if (requestCode == SELECT_FILE && resultCode == RESULT_OK) {
             Uri imageUri = data.getData();
@@ -302,22 +301,24 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .setAspectRatio(1, 1)
                     .start(this);
-
         }
-
 
         //image crop library code
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
             if (resultCode == RESULT_OK) {
+
                 imageHoldUri = result.getUri();
-
                 iv_R_ProfileImage.setImageURI(imageHoldUri);
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
-            }
-        }
 
+            }
+//            else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+//                Exception error = result.getError();
+//                Toast.makeText(RegisterActivity.this, (CharSequence) error, Toast.LENGTH_LONG).show();
+//            }
+        }
     }
 
     @Override
