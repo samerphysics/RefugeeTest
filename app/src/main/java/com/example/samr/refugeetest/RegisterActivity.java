@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.CheckBox;
@@ -60,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     Uri imageHoldUri = null;
 
     //FIRE BASE DATABASE FIELDS
-    DatabaseReference mUserDatabse;
+    DatabaseReference mUserDatabase;
     StorageReference mStorageRef;
 
     @Override
@@ -186,7 +185,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         if (task.isSuccessful()) {
 
                             //FIRE BASE DATABASE INSTANCE
-                            mUserDatabse = FirebaseDatabase.getInstance().getReference().child("Users").child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
+                            mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
                             mStorageRef = FirebaseStorage.getInstance().getReference();
 
                             ///////////////////////////////////////// Save user info to fire base db
@@ -205,13 +204,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                                         final Uri imageUrl = taskSnapshot.getDownloadUrl();
 
-                                        mUserDatabse.child("first_name").setValue(firstName);
-                                        mUserDatabse.child("last_name").setValue(lastName);
-                                        mUserDatabse.child("age").setValue(age);
-                                        mUserDatabse.child("gender").setValue(gender);
-                                        mUserDatabse.child("user_id").setValue(mAuth.getCurrentUser().getUid());
+                                        mUserDatabase.child("first_name").setValue(firstName);
+                                        mUserDatabase.child("last_name").setValue(lastName);
+                                        mUserDatabase.child("age").setValue(age);
+                                        mUserDatabase.child("gender").setValue(gender);
+                                        mUserDatabase.child("user_id").setValue(mAuth.getCurrentUser().getUid());
                                         assert imageUrl != null;
-                                        mUserDatabse.child("image_url").setValue(imageUrl.toString());
+                                        mUserDatabase.child("image_url").setValue(imageUrl.toString());
 
                                     }
                                 });
@@ -263,9 +262,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void cameraIntent() {
-
         //CHOOSE CAMERA
-        Log.d("gola", "entered here");
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, REQUEST_CAMERA);
     }
@@ -273,7 +270,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private void galleryIntent() {
 
         //CHOOSE IMAGE FROM GALLERY
-        Log.d("gola", "entered here");
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, SELECT_FILE);
