@@ -15,17 +15,13 @@ public class FirstActivity extends AppCompatActivity {
         setContentView(R.layout.activity_first);
 
         ////////////////////// if the user is logged in start MainActivity else Start First Activity
-        if(FirebaseAuth.getInstance().getCurrentUser()== null){
-            // the user is not logged in
-
-        }else {
+        if (!(FirebaseAuth.getInstance().getCurrentUser() == null)) {
             // the user is logged in
             Intent intent = new Intent(FirstActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         }
         ////////////////////////////////////////////////////////////////////////////////////////////
-
 
     }
 
