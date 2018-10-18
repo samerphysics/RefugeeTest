@@ -1,5 +1,6 @@
 package com.example.samr.refugeetest;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -8,9 +9,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.support.annotation.NonNull;
 import android.util.Patterns;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -28,7 +31,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
         mAuth = FirebaseAuth.getInstance();
 
         etEmail = findViewById(R.id.etEmail);
@@ -36,7 +38,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         progressBar = findViewById(R.id.progressBar);
 
         findViewById(R.id.btnLogin).setOnClickListener(this);
-
     }
 
     private void userLogin() {
@@ -69,6 +70,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         progressBar.setVisibility(View.VISIBLE);
 
+        ////////////////////////////////////////////////////////////////////// To hide the Keyboard:
+        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        assert imm != null;
+        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+        ////////////////////////////////////////////////////////////////////////////////////////////
+
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -80,7 +87,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     finish();
 
                 } else {
-                    Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Something went wrong, try again please!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -92,7 +99,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (mAuth.getCurrentUser() != null) {
             finish();
-//            startActivity(new Intent(this, MainActivityNavD.class));
         }
     }
 
@@ -111,7 +117,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         startActivity(Intent);
         finish();
     }
-
 
     public void iv_back_arrow(View view) {
         Intent Intent = new Intent(LoginActivity.this, FirstActivity.class);
