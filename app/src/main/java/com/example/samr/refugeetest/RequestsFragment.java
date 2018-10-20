@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Objects;
+
 public class RequestsFragment extends Fragment {
 
     public RequestsFragment() {
@@ -17,7 +19,7 @@ public class RequestsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_requests, container, false);
@@ -32,7 +34,7 @@ public class RequestsFragment extends Fragment {
             public void onClick(View v) {
 
                 Fragment fragment = new ServicesFragment();
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.screen_area, fragment, "ServicesFragment");
                 fragmentTransaction.commit();
@@ -44,7 +46,7 @@ public class RequestsFragment extends Fragment {
             public void onClick(View v) {
 
                 Fragment fragment = new RequestsFragment();
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.screen_area, fragment, "RequestsFragment");
                 fragmentTransaction.commit();

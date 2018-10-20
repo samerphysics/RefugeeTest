@@ -45,8 +45,6 @@
         <activity android:name=".SellServiceActivity" />
         <activity android:name=".RequestServiceActivity" />
         <activity android:name=".UserProfileActivity" />
-        <activity android:name=".TestActivity" />
-        <activity android:name=".Retrieve" />
     </application>
 
 </manifest>
