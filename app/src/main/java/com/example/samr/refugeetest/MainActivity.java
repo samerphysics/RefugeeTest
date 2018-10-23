@@ -148,6 +148,18 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.replace(R.id.screen_area, fragment, "ServicesFragment");
             fragmentTransaction.commit();
 
+        } else if (id == R.id.nav_request_details) {
+
+            Intent intent = new Intent(MainActivity.this, RequestDetailsActivity.class);
+            startActivity(intent);
+            finish();
+
+        } else if (id == R.id.nav_request_list) {
+
+            Intent intent = new Intent(MainActivity.this, RequestListActivity.class);
+            startActivity(intent);
+            finish();
+
         } else if (id == R.id.nav_requests) {
 
             Fragment fragment = new RequestsFragment();
