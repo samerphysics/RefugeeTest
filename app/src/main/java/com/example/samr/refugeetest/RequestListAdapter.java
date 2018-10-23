@@ -28,11 +28,12 @@ import static android.support.constraint.Constraints.TAG;
 public class RequestListAdapter extends BaseAdapter {
     private Context context;
     private List<PojoRequest[]> requests;
+
     public RequestListAdapter(Context context, List<PojoRequest> requestList) {
         this.context = context;
         requests = new ArrayList<>();
         if (requestList != null && !requestList.isEmpty()) {
-            for (int i = 0; i < requestList.size(); i+=2) {
+            for (int i = 0; i < requestList.size(); i += 2) {
                 PojoRequest[] doubleRequest = new PojoRequest[2];
                 doubleRequest[0] = requestList.get(i);
                 try {
@@ -89,7 +90,6 @@ public class RequestListAdapter extends BaseAdapter {
         }
         return view;
     }
-
 
     private View inflateView(Context context, ViewGroup parent, PojoRequest request) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);

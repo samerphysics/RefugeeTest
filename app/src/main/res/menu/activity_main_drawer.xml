@@ -9,14 +9,6 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="Services" />
         <item
-            android:id="@+id/nav_request_details"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="nav_request_details" />
-        <item
-            android:id="@+id/nav_request_list"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="nav_request_list" />
-        <item
             android:id="@+id/nav_requests"
             android:icon="@drawable/ic_menu_camera"
             android:title="Requests" />

@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -17,6 +19,8 @@ import java.util.List;
 
 public class RequestListActivity extends AppCompatActivity {
     private static final String TAG = "RequestListActivity";
+
+    ProgressBar progressBar;
 
     //data
     private DatabaseReference mDatabaseRequestServiceRef;
@@ -33,11 +37,15 @@ public class RequestListActivity extends AppCompatActivity {
         requestListAdapter = new RequestListAdapter(getApplicationContext(), new ArrayList());
         lvRequests = findViewById(R.id.rl_lv_requests);
         lvRequests.setAdapter(requestListAdapter);
+
+        progressBar = findViewById(R.id.progressBar);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        progressBar.setVisibility(View.VISIBLE);
 
         mDatabaseRequestServiceRef = FirebaseDatabase.getInstance().
                 getReference("Request_Service");
@@ -49,6 +57,9 @@ public class RequestListActivity extends AppCompatActivity {
                     try {
                         PojoRequest pojoRequest = new PojoRequest(ds);
                         newRequestList.add(pojoRequest);
+
+                        progressBar.setVisibility(View.GONE);
+
                     } catch (Exception e) {
                         Log.d(TAG, "onDataChange: Exception caught", e);
                     }

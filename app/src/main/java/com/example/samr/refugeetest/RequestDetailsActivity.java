@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -17,6 +19,7 @@ import com.squareup.picasso.Picasso;
 import java.util.StringJoiner;
 
 public class RequestDetailsActivity extends AppCompatActivity {
+
     private static final String TAG = "RequestDetailsActivity";
     //Data Ref
     private String requestId;
@@ -31,6 +34,7 @@ public class RequestDetailsActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         requestId = extras.get("requestId").toString();
         userId = extras.get("userId").toString();
+
     }
 
     @Override
@@ -38,6 +42,7 @@ public class RequestDetailsActivity extends AppCompatActivity {
         super.onStart();
 
         if (requestId !=null && !requestId.isEmpty()) {
+
             mDatabaseRequestRef = FirebaseDatabase
                     .getInstance()
                     .getReference("/Request_Service/" + requestId);
