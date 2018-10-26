@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -30,8 +29,6 @@ public class RequestsFragment extends Fragment {
 
     ProgressBar progressBar;
 
-    //data
-    private DatabaseReference mDatabaseRequestServiceRef;
     private List<PojoRequest> mRequestList;
     private RequestListAdapter requestListAdapter;
 
@@ -48,14 +45,15 @@ public class RequestsFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_requests, container, false);
 
-        requestListAdapter = new RequestListAdapter(getContext(), new ArrayList());
+        requestListAdapter = new RequestListAdapter(getContext(), new ArrayList<PojoRequest>());
         lvRequests = rootView.findViewById(R.id.rl_lv_requests);
         lvRequests.setAdapter(requestListAdapter);
 
         progressBar = rootView.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
 
-        mDatabaseRequestServiceRef = FirebaseDatabase.getInstance().
+        //data
+        DatabaseReference mDatabaseRequestServiceRef = FirebaseDatabase.getInstance().
                 getReference("Request_Service");
         mDatabaseRequestServiceRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -115,57 +113,3 @@ public class RequestsFragment extends Fragment {
         });
     }
 }
-
-
-
-
-
-
-// Original code:
-/*
-
-
-public class RequestsFragment extends Fragment {
-
-    public RequestsFragment() {
-        // Required empty public constructor
-    }
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_requests, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        view.findViewById(R.id.btnServices).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Fragment fragment = new ServicesFragment();
-                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.screen_area, fragment, "ServicesFragment");
-                fragmentTransaction.commit();
-            }
-        });
-
-        view.findViewById(R.id.btnRequests).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Fragment fragment = new RequestsFragment();
-                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.screen_area, fragment, "RequestsFragment");
-                fragmentTransaction.commit();
-            }
-        });
-    }
-}
-
- */
